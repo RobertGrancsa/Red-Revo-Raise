@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2734375" />
+        <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/background_splash.xml" value="0.246875" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2734375" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/layout/activity_main.xml" value="0.25729166666666664" />
+        <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/layout/activity_splashs_screen.xml" value="0.23072916666666668" />
       </map>
     </option>
   </component>
