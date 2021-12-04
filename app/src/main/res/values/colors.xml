@@ -8,7 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg">#353535</color>
+    <color name="green">#00FF00</color>
     <color name="colorPrimary">#00497B</color>
     <color name="colorAccent">#EE1D23</color>
+    <color name="colorPrimaryLight">#AAE0FA</color>
 
 </resources>

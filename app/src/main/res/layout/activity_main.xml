@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="90dp"
+        android:scrollbars="none"/>
+
     <androidx.appcompat.widget.SearchView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/search_bar_home"
@@ -15,6 +22,17 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/background" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

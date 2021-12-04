@@ -1,0 +1,12 @@
+type StockValue {
+  price: Float
+  date: AWSDate
+}
+
+type CompanyModel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  value: Float
+  pastValues: [StockValue]
+}
+ 

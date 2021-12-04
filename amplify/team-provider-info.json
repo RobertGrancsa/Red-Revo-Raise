@@ -1,0 +1,15 @@
+{
+  "redrevo": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-redrevoraise-redrevo-114302-authRole",
+      "UnauthRoleArn": "arn:aws:iam::816233679334:role/amplify-redrevoraise-redrevo-114302-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::816233679334:role/amplify-redrevoraise-redrevo-114302-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-redrevoraise-redrevo-114302-deployment",
+      "UnauthRoleName": "amplify-redrevoraise-redrevo-114302-unauthRole",
+      "StackName": "amplify-redrevoraise-redrevo-114302",
+      "StackId": "arn:aws:cloudformation:eu-west-1:816233679334:stack/amplify-redrevoraise-redrevo-114302/96602f60-54e6-11ec-aaf2-0645e2cc59f3",
+      "AmplifyAppId": "d8sryda31jm15"
+    }
+  }
+}
