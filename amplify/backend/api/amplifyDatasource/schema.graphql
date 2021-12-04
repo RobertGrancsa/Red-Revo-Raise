@@ -1,3 +1,0 @@
-type BCR @model @auth(rules: [{allow: public}]) {
-  id: ID!
-}
