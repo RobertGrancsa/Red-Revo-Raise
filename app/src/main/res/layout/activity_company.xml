@@ -22,7 +22,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingBottom="16dp"
-            app:checkedChip="@id/select_1"
+            app:checkedChip="@id/select_4"
             app:selectionRequired="true"
             app:singleLine="true"
             app:singleSelection="true">
@@ -193,6 +193,6 @@
         android:layout_below="@+id/data"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/appl_4" />
+        android:src="@drawable/orcl_4" />
 
 </RelativeLayout>

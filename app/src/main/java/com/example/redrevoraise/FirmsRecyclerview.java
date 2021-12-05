@@ -91,7 +91,7 @@ public class FirmsRecyclerview {
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, CompanyStats.class);
                     intent.putExtra("ticker", company.getTicker());
-                    intent.putExtra("region", company.getTicker());
+                    intent.putExtra("region", company.getRegion());
                     intent.putExtra("priceToday", company.getPriceToday());
                     intent.putExtra("priceYest", company.getPriceYest());
                     intent.putExtra("difference", difference);
