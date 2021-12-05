@@ -11,5 +11,18 @@
       "StackId": "arn:aws:cloudformation:eu-west-1:816233679334:stack/amplify-redrevoraise-redrevo-114302/96602f60-54e6-11ec-aaf2-0645e2cc59f3",
       "AmplifyAppId": "d8sryda31jm15"
     }
+  },
+  "redrevodev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-redrevoraise-redrevodev-42416-authRole",
+      "UnauthRoleArn": "arn:aws:iam::816233679334:role/amplify-redrevoraise-redrevodev-42416-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::816233679334:role/amplify-redrevoraise-redrevodev-42416-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-redrevoraise-redrevodev-42416-deployment",
+      "UnauthRoleName": "amplify-redrevoraise-redrevodev-42416-unauthRole",
+      "StackName": "amplify-redrevoraise-redrevodev-42416",
+      "StackId": "arn:aws:cloudformation:eu-west-1:816233679334:stack/amplify-redrevoraise-redrevodev-42416/72fa1ef0-5572-11ec-8727-0ad2270914c1",
+      "AmplifyAppId": "d8sryda31jm15"
+    }
   }
 }

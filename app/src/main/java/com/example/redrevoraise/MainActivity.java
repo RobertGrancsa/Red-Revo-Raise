@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.CompanyModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressIndicator;
 
     private List<String> keys = new ArrayList<String>();
-    private List<Company> companies = new ArrayList<Company>();
+    private List<CompanyModel> companies = new ArrayList<CompanyModel>();
     private List<Company> companiesWatch = new ArrayList<Company>();
     private int index;
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences sharedPrefs = getSharedPreferences("watchlist", 0);
+
         index = sharedPrefs.getInt("index", 0);
 
         progressIndicator = findViewById(R.id.progressBar);
@@ -52,13 +55,36 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerViewWatch.setNestedScrollingEnabled(false);
 
         try {
-            //Amplify.addPlugin(new AWSApiPlugin()); // UNCOMMENT this line once backend is deployed
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.configure(getApplicationContext());
-            Log.i("Amplify", "Initialized Amplify");
+            Amplify.addPlugin(new AWSApiPlugin());
+            Log.i("MyAmplifyApp", "Initialized Amplify");
         } catch (AmplifyException error) {
-            Log.e("Amplify", "Could not initialize Amplify", error);
+            Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
+
+        CompanyModel item = CompanyModel.builder()
+                .ticker("GOOG")
+                .region("US")
+                .priceToday("600")
+                .priceYest("800")
+                .build();
+        Amplify.DataStore.save(item,
+                saved -> Log.i("Amplify", "Saved item: " + saved.item().getId()),
+                error -> Log.e("Amplify", "Could not save item to DataStore", error)
+        );
+        Amplify.DataStore.query(CompanyModel.class,
+                allPosts -> {
+                    if (allPosts.hasNext()) {
+                        CompanyModel newthing = allPosts.next();
+                        companies.add(newthing);
+                        Log.i("Amplify", "Successful query, found posts.");
+                    } else {
+                        Log.i("Amplify", "Successful query, but no posts.");
+                    }
+                },
+                error -> Log.e("MyAmplifyApp",  "Error retrieving posts", error)
+        );
 
         keys.add("key1");
         keys.add("key2");
@@ -113,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         companies.add(company_4);
         companies.add(company_5);
         companies.add(company_6);
+
 
         new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch, keys);
         new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies, keys);

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 
 public class CompanyStats extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class CompanyStats extends AppCompatActivity {
     private MaterialButton watchlist;
     private View status;
     private ImageSwitcher imageSwitcher;
+    private ChipGroup chipGroup;
     private boolean isWatching = false;
     private int counter;
 
@@ -61,11 +63,13 @@ public class CompanyStats extends AppCompatActivity {
         status = findViewById(R.id.status);
         watchlist = findViewById(R.id.watchlist_button);
         imageSwitcher = findViewById(R.id.graphs_flipper);
+        chipGroup = findViewById(R.id.chipGroup);
 
         companyTicker.setText(company.getTicker());
         companyRegion.setText(company.getRegion());
         currentPrice.setText(new StringBuilder().append("$").append(company.getPriceToday()).toString());
         priceDifference.setText(new StringBuilder().append(difference).append(" (").append(percentage).append("%)").toString());
+//        imageSwitcher.setImageDrawable(getDrawable(R.drawable.figure_1));
 
         if (isWatching) {
             watchlist.setText(getString(R.string.watchlist_on));

@@ -81,6 +81,7 @@ public class FirmsRecyclerview {
             } else {
                 priceDifference.setTextColor(ColorStateList.valueOf(mContext.getResources().getColor(R.color.good)));
                 status.setBackgroundColor(mContext.getResources().getColor(R.color.good));
+                priceDifference.setText(new StringBuilder().append("+").append(difference).append(" (").append(percentage).append("%)").toString());
             }
 
 
