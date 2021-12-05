@@ -8,7 +8,9 @@
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/arrow_price.xml" value="0.246875" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/background.xml" value="0.2734375" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/background_splash.xml" value="0.246875" />
+        <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/gradient.xml" value="0.246875" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/ic_baseline_arrow_right_alt_24.xml" value="0.246875" />
+        <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/ic_image.xml" value="0.246875" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2734375" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/font-v26/source_sans_pro.xml" value="0.2609375" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/font/source_sans_pro.xml" value="0.2609375" />
@@ -16,6 +18,8 @@
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/layout/activity_splashs_screen.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/layout/firm_layout.xml" value="0.536" />
+        <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/menu/menu.xml" value="0.23072916666666668" />
+        <entry key="..\:/Users/robik/AndroidStudioProjects/RedRevoRaise/app/src/main/res/xml/searchable.xml" value="0.23072916666666668" />
       </map>
     </option>
   </component>

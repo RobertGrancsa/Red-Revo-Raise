@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="$1014.97"
+                android:transitionName="price"
                 android:textSize="28sp" />
 
             <TextView
@@ -69,16 +70,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="-69.63 (-6.42%)"
+                android:transitionName="percentage"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="32dp"
+        <View
+            android:id="@+id/status_home"
+            android:layout_width="8dp"
+            android:layout_marginStart="8dp"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:rotation="-90"
-            app:srcCompat="@drawable/ic_baseline_arrow_right_alt_24" />
+            android:background="@color/bad" />
     </LinearLayout>
 
 </RelativeLayout>

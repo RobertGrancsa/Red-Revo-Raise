@@ -46,6 +46,7 @@ public class FirmsRecyclerview {
         private TextView priceDifference;
         private RelativeLayout backgroundCompany;
         private float priceTodayFloat, priceYesterdayFloat;
+        private View status;
         private String key;
 
 
@@ -57,26 +58,29 @@ public class FirmsRecyclerview {
             currentPrice = itemView.findViewById(R.id.currentPrice);
             priceDifference = itemView.findViewById(R.id.priceDifference);
             backgroundCompany = itemView.findViewById(R.id.backgroundCompany);
+            status = itemView.findViewById(R.id.status_home);
         }
         public void bind(Company company, String key){
-            priceTodayFloat = Float.parseFloat(company.getRegularMarketPrice());
-            priceYesterdayFloat = Float.parseFloat(company.getRegularMarketYest());
+            priceTodayFloat = Float.parseFloat(company.getPriceToday());
+            priceYesterdayFloat = Float.parseFloat(company.getPriceYest());
 
             float diff = priceTodayFloat - priceYesterdayFloat;
-            String difference = Float.toString(diff);
+            String difference = String.format("%.2f", diff);
 
             float per = priceTodayFloat / priceYesterdayFloat * 100;
-            String percentage = Float.toString(per);
+            String percentage = String.format("%.2f", per);
 
             companyTicker.setText(company.getTicker());
             companyRegion.setText(company.getRegion());
-            currentPrice.setText(company.getRegularMarketPrice());
+            currentPrice.setText(new StringBuilder().append("$").append(company.getPriceToday()).toString());
             priceDifference.setText(new StringBuilder().append(difference).append(" (").append(percentage).append("%)").toString());
 
             if (diff < 0) {
-                priceDifference.setTextColor(ColorStateList.valueOf(mContext.getResources().getColor(R.color.colorAccent)));
+                priceDifference.setTextColor(ColorStateList.valueOf(mContext.getResources().getColor(R.color.bad)));
+                status.setBackgroundColor(mContext.getResources().getColor(R.color.bad));
             } else {
-                priceDifference.setTextColor(ColorStateList.valueOf(mContext.getResources().getColor(R.color.green)));
+                priceDifference.setTextColor(ColorStateList.valueOf(mContext.getResources().getColor(R.color.good)));
+                status.setBackgroundColor(mContext.getResources().getColor(R.color.good));
             }
 
 
@@ -90,8 +94,8 @@ public class FirmsRecyclerview {
                     intent.putExtra("difference", difference);
                     intent.putExtra("percentage", percentage);
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
-                            Pair.create(backgroundCompany, "background"), Pair.create(companyTicker, "ticker"),
-                            Pair.create(companyRegion, "region"));
+                            Pair.create(companyTicker, "ticker"), Pair.create(companyRegion, "region"),
+                            Pair.create(currentPrice, "price"), Pair.create(priceDifference, "percentage"));
                     mContext.startActivity(intent, options.toBundle());
                 }
             });

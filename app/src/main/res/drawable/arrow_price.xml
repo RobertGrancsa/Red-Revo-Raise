@@ -4,7 +4,8 @@
     android:viewportWidth="24"
     android:viewportHeight="24"
     android:tint="?attr/colorControlNormal"
-    android:autoMirrored="true">
+    android:autoMirrored="true"
+    android:rotation="-90">
   <path
       android:fillColor="@android:color/white"
       android:pathData="M16.01,11H4v2h12.01v3L20,12l-3.99,-4z"/>

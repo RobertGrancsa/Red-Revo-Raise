@@ -4,6 +4,7 @@
         android:drawable="@drawable/arrow_price"
         android:gravity="center"
         android:width="96dp"
-        android:height="32dp">
+        android:height="32dp"
+        android:rotation="-90">
     </item>
 </layer-list>
