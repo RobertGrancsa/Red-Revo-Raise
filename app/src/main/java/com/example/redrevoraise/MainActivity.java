@@ -6,22 +6,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.CompanyModel;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewWatch;
     private SearchView searchBar;
     private ProgressBar progressIndicator;
+    private TextView headerWatchlist;
 
     private List<String> keys = new ArrayList<String>();
-    private List<CompanyModel> companies = new ArrayList<CompanyModel>();
-    private List<Company> companiesWatch = new ArrayList<Company>();
+    public final List<CompanyModel> companies = new ArrayList<CompanyModel>();
+    private List<CompanyModel> companiesWatch = new ArrayList<CompanyModel>();
     private int index;
 
     @Override
@@ -48,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerViewWatch = findViewById(R.id.recyclerViewWatching);
         searchBar = findViewById(R.id.search_bar_home);
+        headerWatchlist = findViewById(R.id.watchlist_text);
         searchBar.setQueryHint("Seach for example \"GOOG\"");
 
         progressIndicator.setVisibility(View.VISIBLE);
@@ -56,100 +71,49 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.configure(getApplicationContext());
             Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.configure(getApplicationContext());
+//            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+//            Amplify.addPlugin(new AWSS3StoragePlugin());
+
             Log.i("MyAmplifyApp", "Initialized Amplify");
         } catch (AmplifyException error) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
 
-        CompanyModel item = CompanyModel.builder()
-                .ticker("GOOG")
-                .region("US")
-                .priceToday("600")
-                .priceYest("800")
-                .build();
-        Amplify.DataStore.save(item,
-                saved -> Log.i("Amplify", "Saved item: " + saved.item().getId()),
-                error -> Log.e("Amplify", "Could not save item to DataStore", error)
-        );
-        Amplify.DataStore.query(CompanyModel.class,
-                allPosts -> {
-                    if (allPosts.hasNext()) {
-                        CompanyModel newthing = allPosts.next();
-                        companies.add(newthing);
-                        Log.i("Amplify", "Successful query, found posts.");
-                    } else {
-                        Log.i("Amplify", "Successful query, but no posts.");
+        Amplify.DataStore.query(
+                CompanyModel.class,
+                items -> {
+                    while (items.hasNext()) {
+                        CompanyModel ceva = items.next();
+                        Log.d(TAG, "onCreate: " + ceva.getTicker());
+
+                        companies.add(items.next());
+                        Log.i("Amplify", "Id " + companies.size());
                     }
                 },
-                error -> Log.e("MyAmplifyApp",  "Error retrieving posts", error)
+                failure -> Log.e("Amplify", "Could not query DataStore", failure)
         );
+        Log.d(TAG, "onCreate: size " + companies.size());
 
-        keys.add("key1");
-        keys.add("key2");
-        keys.add("key3");
-        keys.add("key4");
-        keys.add("key5");
-        keys.add("key6");
-        keys.add("key7");
-        keys.add("key8");
-        keys.add("key9");
-        keys.add("key10");
-
-        Company company_1 = new Company();
-        company_1.setTicker("TSLA");
-        company_1.setPriceToday("1000");
-        company_1.setPriceYest("1100");
-        company_1.setRegion("US");
-
-        Company company_2 = new Company();
-        company_2.setTicker("GOOG");
-        company_2.setPriceToday("500");
-        company_2.setPriceYest("400");
-        company_2.setRegion("US");
-
-        Company company_3 = new Company();
-        company_3.setTicker("INTL");
-        company_3.setPriceToday("800");
-        company_3.setPriceYest("400");
-        company_3.setRegion("US");
-
-        Company company_4 = new Company();
-        company_4.setTicker("AMZN");
-        company_4.setPriceToday("1400");
-        company_4.setPriceYest("400");
-        company_4.setRegion("US");
-
-        Company company_5 = new Company();
-        company_5.setTicker("NVDA");
-        company_5.setPriceToday("1000");
-        company_5.setPriceYest("400");
-        company_5.setRegion("US");
-
-        Company company_6 = new Company();
-        company_6.setTicker("CSF");
-        company_6.setPriceToday("500");
-        company_6.setPriceYest("800");
-        company_6.setRegion("US");
-
-        companies.add(company_1);
-        companies.add(company_2);
-        companies.add(company_3);
-        companies.add(company_4);
-        companies.add(company_5);
-        companies.add(company_6);
-
-
-        new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch, keys);
-        new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies, keys);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch);
+                new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies);
+                updateWatching(sharedPrefs);
+                sortListBy(companies, companiesWatch);
+                progressIndicator.setVisibility(View.GONE);
+            }
+        }, 1000);
+        Log.d(TAG, "onCreate: " + companies.size());
 
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 query = query.toLowerCase(Locale.ROOT);
-                List<Company> companiestemp = new ArrayList<Company>();
-                List<Company> companiestempWatch = new ArrayList<Company>();
+                List<CompanyModel> companiestemp = new ArrayList<CompanyModel>();
+                List<CompanyModel> companiestempWatch = new ArrayList<CompanyModel>();
 
                 for (int i = 0; i < companies.size(); i++) {
                     String ticker = companies.get(i).getTicker().toLowerCase(Locale.ROOT);
@@ -169,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
                             .make(mRecyclerView, "No firm named " + query + " found", Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 } else {
-                    new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companiestemp, keys);
-                    new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiestempWatch, keys);
+                    new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companiestemp);
+                    new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiestempWatch);
                 }
                 return false;
             }
@@ -180,9 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        progressIndicator.setVisibility(View.GONE);
-
     }
 
     private void updateWatching(SharedPreferences sharedPrefs) {
@@ -195,6 +156,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        if (companiesWatch.isEmpty()) {
+            headerWatchlist.setVisibility(View.GONE);
+        } else {
+            headerWatchlist.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -205,8 +171,9 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies, keys);
-                new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch, keys);
+                sortListBy(companies, companiesWatch);
+                new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies);
+                new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch);
                 searchBar.setQuery("", true);
                 return false;
             }
@@ -222,7 +189,65 @@ public class MainActivity extends AppCompatActivity {
         index = sharedPrefs.getInt("index", 0);
         Log.d(TAG, "onResume: " + index);
         updateWatching(sharedPrefs);
-        Log.d(TAG, "onResume: Im back bitches");
+        sortListBy(companies, companiesWatch);
+        new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies);
+        new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch);
         super.onResume();
+    }
+
+    private void sortListBy(List<CompanyModel> companies, List<CompanyModel> companiesWatch){
+        Spinner spinnerSort = findViewById(R.id.sortBy);
+        Spinner spinnerWay = findViewById(R.id.upDown);
+
+        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies);
+                new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
+            }
+        });
+        spinnerWay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                new FirmsRecyclerview().setConfig(mRecyclerView, MainActivity.this, companies);
+                new FirmsRecyclerview().setConfig(mRecyclerViewWatch, MainActivity.this, companiesWatch);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
+            }
+        });
+
+        Collections.sort(companies, new Comparator<CompanyModel>(){
+            public int compare(CompanyModel obj1, CompanyModel obj2) {
+                // ## Ascending order
+                Object selectedItem = spinnerSort.getSelectedItem();
+                Object selectedItem1 = spinnerWay.getSelectedItem();
+                Log.d(ContentValues.TAG, "compare: " + selectedItem1);
+                Log.d(ContentValues.TAG, "compare: " + spinnerWay.getItemIdAtPosition(1));
+                if (spinnerWay.getItemAtPosition(0).equals(selectedItem1)) {
+                    if (spinnerSort.getItemAtPosition(0).equals(selectedItem)) {
+                        return obj1.getTicker().compareToIgnoreCase(obj2.getTicker());
+                    } else {
+                        return Float.valueOf(obj1.getPriceToday()).compareTo(Float.valueOf(obj2.getPriceToday()));
+                    }
+                } else {
+                    if (spinnerSort.getItemAtPosition(0).equals(selectedItem)) {
+                        return obj2.getTicker().compareToIgnoreCase(obj1.getTicker());
+                    } else {
+                        return Float.valueOf(obj2.getPriceToday()).compareTo(Float.valueOf(obj1.getPriceToday()));
+                    }
+                }
+
+            }
+        });
     }
 }

@@ -23,6 +23,17 @@
       "StackName": "amplify-redrevoraise-redrevodev-42416",
       "StackId": "arn:aws:cloudformation:eu-west-1:816233679334:stack/amplify-redrevoraise-redrevodev-42416/72fa1ef0-5572-11ec-8727-0ad2270914c1",
       "AmplifyAppId": "d8sryda31jm15"
+    },
+    "categories": {
+      "auth": {
+        "RedRevoRaise": {}
+      },
+      "storage": {
+        "redrevoraisef1e9c9e9": {
+          "bucketName": "redrevoraisebucket",
+          "region": "eu-west-1"
+        }
+      }
     }
   }
 }

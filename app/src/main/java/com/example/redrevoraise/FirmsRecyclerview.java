@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.datastore.generated.model.CompanyModel;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,12 +31,12 @@ public class FirmsRecyclerview {
     private Context mContext;
     private FirmsRecyclerview.CompanyAdapter mCompanyAdapter;
 
-    public void setConfig(RecyclerView recyclerView, Context context, List<Company> company, List<String> keys){
+    public void setConfig(RecyclerView recyclerView, Context context, List<CompanyModel> company){
         mContext = context;
-        mCompanyAdapter = new FirmsRecyclerview.CompanyAdapter(company, keys);
+        mCompanyAdapter = new FirmsRecyclerview.CompanyAdapter(company);
         mCompanyAdapter.setHasStableIds(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new FirmsRecyclerview.CompanyAdapter(company, keys));
+        recyclerView.setAdapter(new FirmsRecyclerview.CompanyAdapter(company));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -47,7 +49,6 @@ public class FirmsRecyclerview {
         private RelativeLayout backgroundCompany;
         private float priceTodayFloat, priceYesterdayFloat;
         private View status;
-        private String key;
 
 
         public CompanyItemView(@NonNull ViewGroup parent) {
@@ -60,14 +61,14 @@ public class FirmsRecyclerview {
             backgroundCompany = itemView.findViewById(R.id.backgroundCompany);
             status = itemView.findViewById(R.id.status_home);
         }
-        public void bind(Company company, String key){
+        public void bind(CompanyModel company){
             priceTodayFloat = Float.parseFloat(company.getPriceToday());
             priceYesterdayFloat = Float.parseFloat(company.getPriceYest());
 
             float diff = priceTodayFloat - priceYesterdayFloat;
             String difference = String.format("%.2f", diff);
 
-            float per = priceTodayFloat / priceYesterdayFloat * 100;
+            float per = diff / priceYesterdayFloat * 100;
             String percentage = String.format("%.2f", per);
 
             companyTicker.setText(company.getTicker());
@@ -89,9 +90,10 @@ public class FirmsRecyclerview {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, CompanyStats.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("company", company);
-                    intent.putExtras(bundle);
+                    intent.putExtra("ticker", company.getTicker());
+                    intent.putExtra("region", company.getTicker());
+                    intent.putExtra("priceToday", company.getPriceToday());
+                    intent.putExtra("priceYest", company.getPriceYest());
                     intent.putExtra("difference", difference);
                     intent.putExtra("percentage", percentage);
                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
@@ -100,17 +102,14 @@ public class FirmsRecyclerview {
                     mContext.startActivity(intent, options.toBundle());
                 }
             });
-            this.key = key;
         }
     }
 
     class CompanyAdapter extends RecyclerView.Adapter<CompanyItemView>{
-        private List<Company> mCompanyList;
-        private List<String> mKeys;
+        private List<CompanyModel> mCompanyList;
 
-        public CompanyAdapter(List<Company> mCompanyList, List<String> mKeys) {
+        public CompanyAdapter(List<CompanyModel> mCompanyList) {
             this.mCompanyList = mCompanyList;
-            this.mKeys = mKeys;
         }
 
         @NonNull
@@ -129,7 +128,7 @@ public class FirmsRecyclerview {
 
         @Override
         public void onBindViewHolder(@NonNull CompanyItemView holder, int position) {
-            holder.bind(mCompanyList.get(position), mKeys.get(position));
+            holder.bind(mCompanyList.get(position));
         }
 
         @Override

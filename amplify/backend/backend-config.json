@@ -54,5 +54,13 @@
         ]
       }
     }
+  },
+  "storage": {
+    "redrevoraisef1e9c9e9": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

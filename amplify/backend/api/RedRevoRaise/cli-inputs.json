@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "RedRevoRaise",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-3c68eb2b-e4a3-4d41-8578-0cfd1f678b61/amplify/backend/api/RedRevoRaise/schema.graphql",
+    "gqlSchemaPath": "C:\\Users\\robik\\AndroidStudioProjects\\RedRevoRaise\\amplify\\backend\\api\\RedRevoRaise\\schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",
@@ -14,10 +14,6 @@
         "mode": "AWS_IAM"
       }
     ],
-    "conflictResolution": {
-      "defaultResolutionStrategy": {
-        "type": "AUTOMERGE"
-      }
-    }
+    "conflictResolution": {}
   }
 }
